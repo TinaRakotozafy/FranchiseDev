@@ -28,8 +28,12 @@ public class AttribuDemande implements Serializable{
 	private Long idAttribution;
 	
 	@ManyToOne
-	@JoinColumn(name="idAgent")
-	private Agent agent;
+	@JoinColumn(name="idAgentD")
+	private Agent agentDetenteur;
+	
+	@ManyToOne
+	@JoinColumn(name="idAgentR")
+	private Agent agentReceveur;
 	
 	private String observation;
 	
@@ -57,14 +61,15 @@ public class AttribuDemande implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public AttribuDemande(Demande demande, String observation, FEtatDemande etatDemande, FDossier dossier, Agent agent, boolean presence) {
+	public AttribuDemande(Demande demande, String observation, FEtatDemande etatDemande, FDossier dossier, Agent agentDetenteur, Agent agentReceveur, boolean presence) {
 		super();
 		//this.date = new Date();
 		this.demande = demande;
 		this.observation = observation;
 		this.etatDemande = etatDemande;
 		this.dossier = dossier;
-		this.agent = agent;
+		this.agentDetenteur = agentDetenteur;
+		this.agentReceveur = agentReceveur;
 		this.presence = presence;
 	}
 	
@@ -76,13 +81,7 @@ public class AttribuDemande implements Serializable{
 		this.presence = presence;
 	}
 
-	public Agent getAgent() {
-		return agent;
-	}
-
-	public void setAgent(Agent agent) {
-		this.agent = agent;
-	}
+	
 
 	/*public Date getTime() {
 		return time;
@@ -91,6 +90,22 @@ public class AttribuDemande implements Serializable{
 	public void setTime(Date time) {
 		this.time = time;
 	}*/
+
+	public Agent getAgentDetenteur() {
+		return agentDetenteur;
+	}
+
+	public void setAgentDetenteur(Agent agentDetenteur) {
+		this.agentDetenteur = agentDetenteur;
+	}
+
+	public Agent getAgentReceveur() {
+		return agentReceveur;
+	}
+
+	public void setAgentReceveur(Agent agentReceveur) {
+		this.agentReceveur = agentReceveur;
+	}
 
 	public String getObservation() {
 		return observation;

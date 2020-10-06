@@ -37,10 +37,10 @@ public class DemandeImpl implements IDemande {
 	}
 
 	@Override
-	public void traiter(Long numeroDemande, String observation, FEtatDemande etatDemande, FDossier dossier, Agent agent, boolean presence) {
+	public void traiter(Long numeroDemande, String observation, FEtatDemande etatDemande, FDossier dossier,Agent agentDetenteur, Agent agentReceveur, boolean presence) {
 		Demande demande = consulterDemande(numeroDemande);
 		TraiterDemande traitement = new TraiterDemande(demande, observation,
-				etatDemande, dossier, agent, presence);
+				etatDemande, dossier, agentDetenteur, agentReceveur, presence);
 		attributionRepository.save(traitement);
 		demande.setEtatDemande(etatDemande);
 		demande.setDossier(demande.getDossier());
@@ -55,11 +55,12 @@ public class DemandeImpl implements IDemande {
 	@Override
 	public void maj(AttribuDemande attributionDemande) {
 		Demande demande = attributionDemande.getDemande();
-		Agent agent = attributionDemande.getAgent();
+		/*Agent agentReceveur = attributionDemande.getAgentReceveur();
+		Agent agentDetenteur = attributionDemande.getAgentDetenteur();*/
 		FEtatDemande etatDemande = attributionDemande.getEtatDemande();
 		boolean presence = attributionDemande.isPresence();
 		demande.setEtatDemande(etatDemande);
-		demande.setAgent(agent);
+		//demande.setAgent(agent);
 		demande.setPresence(presence);
 	}
 

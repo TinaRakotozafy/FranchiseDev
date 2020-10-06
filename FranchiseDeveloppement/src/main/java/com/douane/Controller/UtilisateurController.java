@@ -22,78 +22,49 @@ import com.douane.entite.AttribuDemande;
 import com.douane.entite.Demande;
 import com.douane.entite.FDossier;
 import com.douane.entite.Marchandise;
+import com.douane.entite.Role;
+import com.douane.entite.Utilisateur;
 import com.douane.metier.IDemande;
 import com.douane.metier.Agent.IAgent;
+import com.douane.metier.Role.IRole;
 import com.douane.model.FEtatDemande;
 import com.douane.repository.AgentRepository;
 import com.douane.repository.AttributionRepository;
 import com.douane.repository.DemandeRepository;
 import com.douane.repository.FDossierRepository;
+import com.douane.repository.UtilisateurRepository;
 @Controller
-@RequestMapping("/attributions/")
-public class AttributionController {
+@RequestMapping("/utilisateurs/")
+public class UtilisateurController {
 	@Autowired
-	private IAgent agentMetier;
+	private UtilisateurRepository utilRep;
 	@Autowired
-	private AgentRepository agentRepository;
-	@Autowired
-	private IDemande demandeMetier;
-	@Autowired
-	private AttributionRepository attributionRepository;
-	
-	@Autowired
-	private FDossierRepository dossierRepository;
-
-	@Autowired
-	private DemandeRepository demandeRepository;
-
-    @Autowired
-    public AttributionController(AttributionRepository attributionRepository) {
-        this.attributionRepository = attributionRepository;
-    }
+	private IRole roleMet;
 
     @GetMapping("signup")
-    public String showSignUpForm(AttribuDemande attributionDemande, Model model, @ModelAttribute("selectDemande") Demande selectDemande) {
-    	List<Demande> selectDemandes = new ArrayList<>();
-    	List<Agent> selectAgents = new ArrayList<>();
-        selectDemandes = demandeMetier.findAllDemande();
-        selectAgents = agentMetier.findAllAgent();
-        model.addAttribute("selectDemandes", selectDemandes);
-        model.addAttribute("selectAgents", selectAgents);
-    	return "addAttribution";
-    }
-    @RequestMapping("/consulterDemande")
-    public String consulter(Model model, Long numeroDemande) {
-    	model.addAttribute("numeroDemande", numeroDemande);
-    	try {
-    		Demande demande = demandeMetier.consulterDemande(numeroDemande);
-    		Page<AttribuDemande> pageAttributions = demandeMetier.listeAttribuDemande(numeroDemande, 0, 4);
-    		model.addAttribute("listeAttributions", pageAttributions.getContent());
-        	model.addAttribute("demande", demande);
-    	}catch(Exception e) {
-    		model.addAttribute("exception", e);
-    	}
-    	
-        return "attribuDemande";
+    public String showSignUpForm(Utilisateur utilisateur, Model model) {
+    	List<Role> selectRoles = new ArrayList<>();
+    	selectRoles = roleMet.findAllRole();
+        model.addAttribute("selectRoles", selectRoles);
+    	return "addUtilisateur";
     }
     @GetMapping("list")
-    public String showUpdateForm(AttribuDemande attributionDemande, Model model) {
-        model.addAttribute("attributions", attributionRepository.findAll());
-        return "attribuDemande";
+    public String showUpdateForm(Utilisateur utilisateur, Model model) {
+        model.addAttribute("utilisateurs", utilRep.findAll());
+        return "utilisateur";
     }
-
+    
     @PostMapping("add")
-    public String addAttribution(@Validated AttribuDemande attributionDemande, BindingResult result, Model model) {
+    public String addAttribution(@Validated Utilisateur utilisateur, BindingResult result, Model model) {
     	if (result.hasErrors()) {
             return "attribuDemande";
         }
-    	demandeMetier.maj(attributionDemande);
-    	attributionRepository.save(attributionDemande);
+    	utilRep.save(utilisateur);
     	
         return "redirect:list";
     }
  
-
+    /*
     @GetMapping("edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
     	AttribuDemande attributionDemande = attributionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
@@ -113,12 +84,12 @@ public class AttributionController {
         model.addAttribute("attributions", attributionRepository.findAll());
         return "attribuDemande";
     }
-
+*/
     @GetMapping("delete/{id}")
     public String deleteAttribution(@PathVariable("id") long id, Model model) {
-    	AttribuDemande attributionDemande = attributionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
-    	attributionRepository.delete(attributionDemande);
-        model.addAttribute("attributionDemandes", attributionRepository.findAll());
-        return "attribuDemande";
+    	Utilisateur utilisateur = utilRep.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+    	utilRep.delete(utilisateur);
+        model.addAttribute("utilisateurs", utilRep.findAll());
+        return "utilisateur";
     }
 }

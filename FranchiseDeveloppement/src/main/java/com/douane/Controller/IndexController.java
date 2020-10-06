@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 	
-	@GetMapping("/")
+	@GetMapping("")
     public String homePage() {
         return "index";
     }
-
+	/*
     @GetMapping("/requerant")
     public String requerantPage() {
         return "requerant";
@@ -44,6 +44,6 @@ public class IndexController {
     @GetMapping("/attribuDemande")
     public String attributionPage() {
         return "attribuDemande";
-    }
+    }*/
     
 }

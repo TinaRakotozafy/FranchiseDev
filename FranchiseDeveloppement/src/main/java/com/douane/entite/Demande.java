@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.douane.model.FEtatDemande;
 
@@ -37,10 +38,6 @@ public class Demande implements Serializable{
 	private Date dateDepot = new Date();
 	private String motif;
 	private boolean presence;
-	
-	@ManyToOne(cascade = {CascadeType.ALL})
-	@JoinColumn(name="idAgent")
-	private Agent agent;
 	
 	@OneToOne
 	@JoinColumn(name="idCuo")
@@ -94,14 +91,6 @@ public class Demande implements Serializable{
 
 	public void setFrequerant(FRequerant frequerant) {
 		this.frequerant = frequerant;
-	}
-
-	public Agent getAgent() {
-		return agent;
-	}
-
-	public void setAgent(Agent agent) {
-		this.agent = agent;
 	}
 	public void setNumeroDemande(Long numeroDemande) {
 		this.numeroDemande = numeroDemande;
